@@ -1,24 +1,24 @@
 class DevcontainerRs < Formula
   desc "Native Rust foundation for devcontainer CLI"
   homepage "https://github.com/jooh/devcontainer-rs"
-  version "0.0.35"
+  version "0.0.36"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.35/devcontainer-aarch64-apple-darwin.tar.gz"
-      sha256 "cc2e85fe38d5747433d51beb885567be55f49cecf27402a71a34cb52cb93cf03"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.36/devcontainer-aarch64-apple-darwin.tar.gz"
+      sha256 "521fb9180fe2e1413d0f3a6242f0c20c93532425c65ba29dbfbc8c6cf1a91882"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.35/devcontainer-x86_64-apple-darwin.tar.gz"
-      sha256 "ff8412c164ffb654742ddbe2e44c199fbe8047bfe4b6623f1122fabe3ff241f3"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.36/devcontainer-x86_64-apple-darwin.tar.gz"
+      sha256 "72f2658afe352e4ce537218517b1b1de18f88c1116d4249afcb12dc6308d1882"
     end
   end
 
   on_linux do
     depends_on arch: :x86_64
 
-    url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.35/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
-    sha256 "05c70fcf3573ce6e14f765f185757eaef0c326ac4aefebb3adee28437dc15dac"
+    url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.36/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
+    sha256 "98f328b06927844b6977c750906d5dd955ed2ffb5a5fda363342bd8dc100a7ea"
   end
 
   def install
