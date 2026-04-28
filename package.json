@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.js && node scripts/check-workflow.js",
+    "check": "npm test && ruby -c Formula/devcontainer-rs.rb"
+  }
+}
