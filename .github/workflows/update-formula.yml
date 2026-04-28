@@ -1,0 +1,63 @@
+name: Update Homebrew formula
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish, for example devcontainer-v1.2.3
+        required: false
+        type: string
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-homebrew-formula
+  cancel-in-progress: false
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check updater
+        run: npm test
+
+      - name: Render formula
+        env:
+          RELEASE_TAG: ${{ github.event.inputs.tag || '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ -n "$RELEASE_TAG" ]]; then
+            args+=(--tag "$RELEASE_TAG")
+          fi
+          node scripts/update-formula.js "${args[@]}"
+
+      - name: Validate formula syntax
+        run: ruby -c Formula/devcontainer-rs.rb
+
+      - name: Commit formula update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/devcontainer-rs.rb
+          if git diff --cached --quiet; then
+            echo "Homebrew formula already up to date"
+            exit 0
+          fi
+          version="$(ruby -ne 'puts $1 if /^  version "([^"]+)"/' Formula/devcontainer-rs.rb)"
+          git commit -m "Update devcontainer-rs to v${version}"
+          git push origin HEAD:main
