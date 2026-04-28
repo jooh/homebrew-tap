@@ -6,12 +6,12 @@ This tap publishes the Homebrew formula for the native Rust `devcontainer` CLI f
 ## Install
 
 ```bash
-brew install jooh/devcontainer-rs/devcontainer-rs
+brew install jooh/tap/devcontainer-rs
 devcontainer --version
 ```
 
-Homebrew maps this repository, `jooh/homebrew-devcontainer-rs`, to the tap
-shorthand `jooh/devcontainer-rs`.
+Homebrew maps this repository, `jooh/homebrew-tap`, to the tap
+shorthand `jooh/tap`.
 
 ## Formula updates
 
