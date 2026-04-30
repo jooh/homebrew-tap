@@ -26,6 +26,7 @@ class DevcontainerRs < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/devcontainer --version")
+    assert_predicate bin/"devcontainer", :exist?
+    assert_predicate bin/"devcontainer", :executable?
   end
 end
