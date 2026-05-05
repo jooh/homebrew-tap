@@ -21,6 +21,11 @@ const REQUIRED_TARGETS = Object.freeze([
     os: "linux",
     cpu: "x86_64",
   }),
+  Object.freeze({
+    triple: "aarch64-unknown-linux-gnu",
+    os: "linux",
+    cpu: "arm64",
+  }),
 ]);
 
 function archiveName(triple) {
@@ -152,6 +157,7 @@ function renderFormula({ repository = SOURCE_REPOSITORY, tag, version, targets }
   const darwinArm64 = findTarget(targets, "aarch64-apple-darwin");
   const darwinX64 = findTarget(targets, "x86_64-apple-darwin");
   const linuxX64Gnu = findTarget(targets, "x86_64-unknown-linux-gnu");
+  const linuxArm64Gnu = findTarget(targets, "aarch64-unknown-linux-gnu");
 
   return `class DevcontainerRs < Formula
   desc "Native Rust foundation for devcontainer CLI"
@@ -170,10 +176,15 @@ function renderFormula({ repository = SOURCE_REPOSITORY, tag, version, targets }
   end
 
   on_linux do
-    depends_on arch: :x86_64
+    depends_on arch: [:arm64, :x86_64]
 
-    url "${linuxX64Gnu.url || releaseDownloadUrl(repository, tag, linuxX64Gnu.triple)}"
-    sha256 "${linuxX64Gnu.sha256}"
+    if Hardware::CPU.arm?
+      url "${linuxArm64Gnu.url || releaseDownloadUrl(repository, tag, linuxArm64Gnu.triple)}"
+      sha256 "${linuxArm64Gnu.sha256}"
+    else
+      url "${linuxX64Gnu.url || releaseDownloadUrl(repository, tag, linuxX64Gnu.triple)}"
+      sha256 "${linuxX64Gnu.sha256}"
+    end
   end
 
   def install
