@@ -93,6 +93,12 @@ test("renders the Homebrew formula", () => {
         cpu: "x86_64",
         sha256: "c".repeat(64),
       },
+      {
+        triple: "aarch64-unknown-linux-gnu",
+        os: "linux",
+        cpu: "arm64",
+        sha256: "d".repeat(64),
+      },
     ],
   });
 
@@ -103,7 +109,12 @@ test("renders the Homebrew formula", () => {
     formula,
     /url "https:\/\/github.com\/jooh\/devcontainer-rs\/releases\/download\/devcontainer-v1\.2\.3\/devcontainer-aarch64-apple-darwin\.tar\.gz"/,
   );
-  assert.match(formula, /depends_on arch: :x86_64/);
+  assert.match(formula, /if Hardware::CPU.arm\?/);
+  assert.match(
+    formula,
+    /devcontainer-aarch64-unknown-linux-gnu\.tar\.gz/,
+  );
+  assert.match(formula, /depends_on arch: \[:arm64, :x86_64\]/);
   assert.match(formula, /bin\.install "devcontainer"/);
   assert.match(formula, /assert_match version\.to_s, shell_output/);
   assert.equal(formula.endsWith("\n"), true);
