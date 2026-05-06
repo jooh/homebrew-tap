@@ -176,8 +176,6 @@ function renderFormula({ repository = SOURCE_REPOSITORY, tag, version, targets }
   end
 
   on_linux do
-    depends_on arch: [:arm64, :x86_64]
-
     if Hardware::CPU.arm?
       url "${linuxArm64Gnu.url || releaseDownloadUrl(repository, tag, linuxArm64Gnu.triple)}"
       sha256 "${linuxArm64Gnu.sha256}"

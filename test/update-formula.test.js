@@ -114,7 +114,11 @@ test("renders the Homebrew formula", () => {
     formula,
     /devcontainer-aarch64-unknown-linux-gnu\.tar\.gz/,
   );
-  assert.match(formula, /depends_on arch: \[:arm64, :x86_64\]/);
+  assert.match(
+    formula,
+    /devcontainer-x86_64-unknown-linux-gnu\.tar\.gz/,
+  );
+  assert.doesNotMatch(formula, /depends_on arch:/);
   assert.match(formula, /bin\.install "devcontainer"/);
   assert.match(formula, /assert_match version\.to_s, shell_output/);
   assert.equal(formula.endsWith("\n"), true);
