@@ -1,26 +1,26 @@
 class DevcontainerRs < Formula
   desc "Native Rust foundation for devcontainer CLI"
   homepage "https://github.com/jooh/devcontainer-rs"
-  version "0.0.48"
+  version "0.0.49"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.48/devcontainer-aarch64-apple-darwin.tar.gz"
-      sha256 "6c1f6ebc18d1c8a2deebe8860fa4faf3dc5461b1e2a4c688896cab153cb562c6"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-aarch64-apple-darwin.tar.gz"
+      sha256 "a0c3f1331ad61bea8785dc4416dc35ebfbf10040569bb2592fef8356acc1e8c9"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.48/devcontainer-x86_64-apple-darwin.tar.gz"
-      sha256 "bbf196926da5556fdb4df57ef3eb5024638dfb683df8b59c384fb25880d60b7e"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-x86_64-apple-darwin.tar.gz"
+      sha256 "529d80a61737205f7471ca5dbf31707068d42db54998bbe56eea25aa1fccc6ca"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.48/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "5348f62a766fb5b6c8d6c54c0d0bd33d75002415b0849d07ff179a5e8da1fecb"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "8828da0f553f108e4ffd2f286327b2cbce6e606b84da0f2da2166139a6b08e37"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.48/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "b27b339abf9a39ec6463ead7e91d51035b40a4c4b0fd9d81eed9eea9b919b4cf"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "c6ca153a99b519fc5489c7daaff33e6295b6a04919e9e9be6a8e4df0080aa04c"
     end
   end
 
