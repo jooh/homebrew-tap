@@ -1,26 +1,26 @@
 class DevcontainerRs < Formula
   desc "Native Rust foundation for devcontainer CLI"
   homepage "https://github.com/jooh/devcontainer-rs"
-  version "0.0.49"
+  version "0.0.50"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-aarch64-apple-darwin.tar.gz"
-      sha256 "a0c3f1331ad61bea8785dc4416dc35ebfbf10040569bb2592fef8356acc1e8c9"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.50/devcontainer-aarch64-apple-darwin.tar.gz"
+      sha256 "672d8071229a8fff115b4afefa447e6516b5e72d016761da3df97d46bb734517"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-x86_64-apple-darwin.tar.gz"
-      sha256 "529d80a61737205f7471ca5dbf31707068d42db54998bbe56eea25aa1fccc6ca"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.50/devcontainer-x86_64-apple-darwin.tar.gz"
+      sha256 "6f92d9c6d85e036ab7744e085905c6509a8389391d611019a7dd0b85f9c22ceb"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "8828da0f553f108e4ffd2f286327b2cbce6e606b84da0f2da2166139a6b08e37"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.50/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "ffd82da62bab21a0b8bd82916c496b94a378617fc352eeb01acf2172501f0d7f"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.49/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "c6ca153a99b519fc5489c7daaff33e6295b6a04919e9e9be6a8e4df0080aa04c"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.50/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "92c05af4efcf53356c645af2793cc88e5bdddf96ae84fc9841593347c98334c8"
     end
   end
 
