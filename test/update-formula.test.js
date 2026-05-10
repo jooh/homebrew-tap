@@ -6,6 +6,7 @@ const {
   archiveName,
   buildFormulaContext,
   extractSha256,
+  fetchResponse,
   parseVersionFromTag,
   renderFormula,
 } = require("../scripts/update-formula");
@@ -31,6 +32,32 @@ test("extracts checksums from cargo-dist checksum files", () => {
     "a".repeat(64),
   );
   assert.throws(() => extractSha256("not a checksum"), /could not parse/);
+});
+
+test("retries transient release asset fetch failures", async () => {
+  const originalFetch = global.fetch;
+  const attempts = [];
+  const waits = [];
+  global.fetch = async (url) => {
+    attempts.push(url);
+    if (attempts.length === 1) {
+      return new Response("bad gateway", { status: 502 });
+    }
+    return new Response("ok", { status: 200 });
+  };
+
+  try {
+    const response = await fetchResponse("https://example.test/checksum.sha256", "text/plain", {
+      maxRetries: 1,
+      sleep: async (delay) => waits.push(delay),
+    });
+
+    assert.equal(await response.text(), "ok");
+    assert.equal(attempts.length, 2);
+    assert.deepEqual(waits, [1000]);
+  } finally {
+    global.fetch = originalFetch;
+  }
 });
 
 test("builds formula context from release metadata and sidecar checksums", () => {

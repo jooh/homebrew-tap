@@ -5,6 +5,9 @@ const path = require("node:path");
 
 const SOURCE_REPOSITORY = "jooh/devcontainer-rs";
 const FORMULA_PATH = path.join("Formula", "devcontainer-rs.rb");
+const DEFAULT_FETCH_MAX_RETRIES = 3;
+const DEFAULT_FETCH_RETRY_DELAY_MS = 1000;
+const RETRYABLE_HTTP_STATUSES = new Set([408, 429, 500, 502, 503, 504]);
 const REQUIRED_TARGETS = Object.freeze([
   Object.freeze({
     triple: "aarch64-apple-darwin",
@@ -200,25 +203,78 @@ function releaseDownloadUrl(repository, tag, triple) {
   return `https://github.com/${repository}/releases/download/${tag}/${archiveName(triple)}`;
 }
 
-async function fetchResponse(url, accept) {
+function sleep(delayMs) {
+  return new Promise((resolve) => setTimeout(resolve, delayMs));
+}
+
+function retryAfterDelayMs(response) {
+  const retryAfter = response.headers.get("retry-after");
+  if (!retryAfter) {
+    return undefined;
+  }
+
+  const seconds = Number(retryAfter);
+  if (Number.isFinite(seconds)) {
+    return Math.max(0, seconds * 1000);
+  }
+
+  const retryAt = Date.parse(retryAfter);
+  if (Number.isNaN(retryAt)) {
+    return undefined;
+  }
+  return Math.max(0, retryAt - Date.now());
+}
+
+function retryDelayMs(response, attempt, retryDelayMsBase) {
+  return retryAfterDelayMs(response) ?? retryDelayMsBase * 2 ** attempt;
+}
+
+function shouldRetryStatus(status) {
+  return RETRYABLE_HTTP_STATUSES.has(status);
+}
+
+async function fetchResponse(url, accept, options = {}) {
   if (typeof fetch !== "function") {
     throw new Error("Node.js fetch is required; use Node.js 18 or newer");
   }
 
-  const response = await fetch(url, {
-    headers: {
-      Accept: accept,
-      "User-Agent": "homebrew-devcontainer-rs-updater",
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
+  const {
+    maxRetries = DEFAULT_FETCH_MAX_RETRIES,
+    retryDelayMsBase = DEFAULT_FETCH_RETRY_DELAY_MS,
+    sleep: sleepFn = sleep,
+  } = options;
 
-  if (!response.ok) {
+  for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
+    let response;
+    try {
+      response = await fetch(url, {
+        headers: {
+          Accept: accept,
+          "User-Agent": "homebrew-devcontainer-rs-updater",
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+    } catch (error) {
+      if (attempt >= maxRetries) {
+        throw error;
+      }
+      await sleepFn(retryDelayMsBase * 2 ** attempt);
+      continue;
+    }
+
+    if (response.ok) {
+      return response;
+    }
+
     const body = await response.text();
-    throw new Error(`GET ${url} failed with ${response.status}: ${body.slice(0, 200)}`);
+    if (!shouldRetryStatus(response.status) || attempt >= maxRetries) {
+      throw new Error(`GET ${url} failed with ${response.status}: ${body.slice(0, 200)}`);
+    }
+
+    await sleepFn(retryDelayMs(response, attempt, retryDelayMsBase));
   }
 
-  return response;
+  throw new Error(`GET ${url} failed after ${maxRetries + 1} attempts`);
 }
 
 async function fetchRelease({ repository = SOURCE_REPOSITORY, tag }) {
@@ -289,6 +345,7 @@ module.exports = {
   archiveName,
   buildFormulaContext,
   extractSha256,
+  fetchResponse,
   parseVersionFromTag,
   releaseDownloadUrl,
   renderFormula,
