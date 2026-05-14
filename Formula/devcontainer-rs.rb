@@ -1,26 +1,26 @@
 class DevcontainerRs < Formula
   desc "Native Rust foundation for devcontainer CLI"
   homepage "https://github.com/jooh/devcontainer-rs"
-  version "0.0.53"
+  version "0.0.54"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.53/devcontainer-aarch64-apple-darwin.tar.gz"
-      sha256 "41e038603eec0f2688859178139017d395d7b29dced4ab20d96b0a7cb5784b8c"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.54/devcontainer-aarch64-apple-darwin.tar.gz"
+      sha256 "a08a326fd11b6c57a4c69865be26fe5376f1a6e79a2b85a5e40a9acd589c94db"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.53/devcontainer-x86_64-apple-darwin.tar.gz"
-      sha256 "84474691744e3481b0edcea9597cd94819b6752ef0706780ce2efe0987f43fbb"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.54/devcontainer-x86_64-apple-darwin.tar.gz"
+      sha256 "fde85af46eadc9889f45077134a3d471f8ca342e45386e177ba296662bfd8a81"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.53/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "ef51b4735fb172d9a6ea694b73477c2fdf3525ee838f24aca22da279a9046ebd"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.54/devcontainer-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "6125c5739fe7e10c3ec40aafad75305fa92e9db84a6c7d4582b48400b391ac81"
     else
-      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.53/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "6ffd3b7df4295be907ce0aa422be36a15ed282f80880a971ec5b5166974e040a"
+      url "https://github.com/jooh/devcontainer-rs/releases/download/devcontainer-v0.0.54/devcontainer-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "58757570675c7bd87e849c033cd6786781344cc0f05eefeff6d21fd6dd0ed033"
     end
   end
 
